@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Escala Veterinária</title>
+
+    <link rel="stylesheet"
+          href="/static/css/style.css">
+
+</head>
+<body>
+
+
+    <div class="top-bar">
+
+        <div></div>
+
+        <h1>Escala da Clínica</h1>
+
+        <button id="manageBtn">
+            Veterinários
+        </button>
+
+    </div>
+
+
+    <div id="calendar"></div>
+
+
+
+    <!-- MODAL VETERINÁRIOS -->
+
+    <div id="modal" class="hidden">
+
+        <div class="modal-content">
+
+            <h2>Veterinários</h2>
+
+
+            <input
+                type="text"
+                id="vetInput"
+                placeholder="Nome"
+            >
+
+
+            <button id="addVetBtn">
+                Adicionar
+            </button>
+
+
+            <div id="vetList"></div>
+
+
+            <button id="closeModal">
+                Fechar
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+
+    <!-- MODAL PLANTÃO -->
+
+    <div id="plantaoModal" class="hidden">
+
+        <div class="modal-content">
+
+            <h2>Definir Plantão</h2>
+
+
+            <select id="vetSelect"></select>
+
+
+            <br><br>
+
+
+            <button id="savePlantaoBtn">
+                Salvar
+            </button>
+
+
+            <button id="closePlantaoModal">
+                Fechar
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <script
+        src="/static/css/calendar.js">
+    </script>
+
+</body>
+</html>
