@@ -1,33 +1,81 @@
 const calendar = document.getElementById("calendar");
 
 
+// =========================
+// MESES
+// =========================
 
-// ============================
-// VETERINÁRIOS
-// ============================
+const monthTitle =
+    document.getElementById("monthTitle");
 
-let veterinarios = [
-    "Dr. Ana",
-    "Dr. João"
+const prevMonth =
+    document.getElementById("prevMonth");
+
+const nextMonth =
+    document.getElementById("nextMonth");
+
+
+let currentMonth = 0;
+
+let currentYear = 2026;
+
+
+const meses = [
+
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro"
+
 ];
 
 
 
-// ============================
+
+// =========================
+// VETERINÁRIOS
+// =========================
+
+let veterinarios = [
+
+    "Dr. Ana",
+    "Dr. João"
+
+];
+
+
+
+
+// =========================
 // MODAL VETERINÁRIOS
-// ============================
+// =========================
 
-const modal = document.getElementById("modal");
+const modal =
+    document.getElementById("modal");
 
-const manageBtn = document.getElementById("manageBtn");
+const manageBtn =
+    document.getElementById("manageBtn");
 
-const closeModal = document.getElementById("closeModal");
+const closeModal =
+    document.getElementById("closeModal");
 
-const addVetBtn = document.getElementById("addVetBtn");
+const addVetBtn =
+    document.getElementById("addVetBtn");
 
-const vetInput = document.getElementById("vetInput");
+const vetInput =
+    document.getElementById("vetInput");
 
-const vetList = document.getElementById("vetList");
+const vetList =
+    document.getElementById("vetList");
 
 
 
@@ -51,7 +99,8 @@ closeModal.onclick = ()=>{
 
 addVetBtn.onclick = ()=>{
 
-    const nome = vetInput.value.trim();
+    const nome =
+        vetInput.value.trim();
 
 
     if(!nome){
@@ -60,6 +109,7 @@ addVetBtn.onclick = ()=>{
 
 
     veterinarios.push(nome);
+
 
     vetInput.value = "";
 
@@ -77,7 +127,9 @@ function renderVetList(){
 
     veterinarios.forEach((nome,index)=>{
 
-        const item = document.createElement("div");
+        const item =
+            document.createElement("div");
+
 
         item.classList.add("vet-item");
 
@@ -88,12 +140,19 @@ function renderVetList(){
 
             <div>
 
-                <button onclick="editarVet(${index})">
+                <button
+                    onclick="editarVet(${index})">
+
                     ✏️
+
                 </button>
 
-                <button onclick="removerVet(${index})">
+
+                <button
+                    onclick="removerVet(${index})">
+
                     ❌
+
                 </button>
 
             </div>
@@ -132,7 +191,9 @@ function editarVet(index){
     }
 
 
-    veterinarios[index] = novoNome;
+    veterinarios[index] =
+        novoNome;
+
 
     renderVetList();
 
@@ -141,16 +202,18 @@ function editarVet(index){
 
 
 
-
-// ============================
+// =========================
 // MODAL PLANTÃO
-// ============================
+// =========================
 
-const plantaoModal = document.getElementById("plantaoModal");
+const plantaoModal =
+    document.getElementById("plantaoModal");
 
-const vetSelect = document.getElementById("vetSelect");
+const vetSelect =
+    document.getElementById("vetSelect");
 
-const savePlantaoBtn = document.getElementById("savePlantaoBtn");
+const savePlantaoBtn =
+    document.getElementById("savePlantaoBtn");
 
 const closePlantaoModal =
     document.getElementById("closePlantaoModal");
@@ -195,7 +258,9 @@ function editarDia(data, plantao){
     });
 
 
-    plantaoModal.classList.remove("hidden");
+    plantaoModal
+        .classList
+        .remove("hidden");
 
 }
 
@@ -203,7 +268,9 @@ function editarDia(data, plantao){
 
 closePlantaoModal.onclick = ()=>{
 
-    plantaoModal.classList.add("hidden");
+    plantaoModal
+        .classList
+        .add("hidden");
 
 };
 
@@ -211,14 +278,18 @@ closePlantaoModal.onclick = ()=>{
 
 savePlantaoBtn.onclick = async ()=>{
 
-    const veterinario = vetSelect.value;
+    const veterinario =
+        vetSelect.value;
 
 
     if(plantaoSelecionado){
 
         await fetch(
+
             `/plantoes/${plantaoSelecionado.id}`,
+
             {
+
                 method:"PUT",
 
                 headers:{
@@ -228,7 +299,9 @@ savePlantaoBtn.onclick = async ()=>{
                 body: JSON.stringify({
                     veterinario
                 })
+
             }
+
         );
 
     }
@@ -236,8 +309,11 @@ savePlantaoBtn.onclick = async ()=>{
     else{
 
         await fetch(
+
             "/plantoes",
+
             {
+
                 method:"POST",
 
                 headers:{
@@ -245,16 +321,23 @@ savePlantaoBtn.onclick = async ()=>{
                 },
 
                 body: JSON.stringify({
+
                     data:diaSelecionado,
+
                     veterinario
+
                 })
+
             }
+
         );
 
     }
 
 
-    plantaoModal.classList.add("hidden");
+    plantaoModal
+        .classList
+        .add("hidden");
 
 
     carregarPlantoes();
@@ -264,10 +347,54 @@ savePlantaoBtn.onclick = async ()=>{
 
 
 
+// =========================
+// NAVEGAÇÃO MÊS
+// =========================
 
-// ============================
+prevMonth.onclick = ()=>{
+
+    currentMonth--;
+
+
+    if(currentMonth < 0){
+
+        currentMonth = 11;
+
+        currentYear--;
+
+    }
+
+
+    carregarPlantoes();
+
+};
+
+
+
+nextMonth.onclick = ()=>{
+
+    currentMonth++;
+
+
+    if(currentMonth > 11){
+
+        currentMonth = 0;
+
+        currentYear++;
+
+    }
+
+
+    carregarPlantoes();
+
+};
+
+
+
+
+// =========================
 // CALENDÁRIO
-// ============================
+// =========================
 
 async function carregarPlantoes(){
 
@@ -282,7 +409,47 @@ async function carregarPlantoes(){
     calendar.innerHTML = "";
 
 
-    for(let dia = 1; dia <= 31; dia++){
+    monthTitle.textContent =
+
+        `${meses[currentMonth]} ${currentYear}`;
+
+
+
+    const primeiroDia =
+
+        new Date(
+            currentYear,
+            currentMonth,
+            1
+        ).getDay();
+
+
+
+    const diasNoMes =
+
+        new Date(
+            currentYear,
+            currentMonth + 1,
+            0
+        ).getDate();
+
+
+
+
+    for(let i = 0; i < primeiroDia; i++){
+
+        const vazio =
+            document.createElement("div");
+
+
+        calendar.appendChild(vazio);
+
+    }
+
+
+
+
+    for(let dia = 1; dia <= diasNoMes; dia++){
 
         const box =
             document.createElement("div");
@@ -291,14 +458,25 @@ async function carregarPlantoes(){
         box.classList.add("day");
 
 
+
         const data =
-            `2026-05-${String(dia).padStart(2,"0")}`;
+
+            `${currentYear}-${
+                String(currentMonth + 1)
+                    .padStart(2,"0")
+            }-${
+                String(dia)
+                    .padStart(2,"0")
+            }`;
+
 
 
         const plantao =
+
             plantoes.find(
                 p => p.data === data
             );
+
 
 
         box.innerHTML = `
@@ -306,12 +484,15 @@ async function carregarPlantoes(){
             <strong>${dia}</strong>
 
             <p>
-                ${plantao ?
+                ${
+                    plantao ?
                     plantao.veterinario :
-                    "Vago"}
+                    "Vago"
+                }
             </p>
 
         `;
+
 
 
         box.onclick = ()=>{
